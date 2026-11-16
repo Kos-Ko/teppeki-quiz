@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>鉄壁 Section 1〜50 文脈穴埋め確認テスト</title>
+<style>
+  :root {
+    --bg: #f7f6f2; --card: #ffffff; --ink: #1f2328; --sub: #5b6470;
+    --line: #e3e1da; --accent: #2b5fa8; --ok: #1f8a4c; --ng: #c0392b;
+    --ok-bg: #e8f5ee; --ng-bg: #fbeaea;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #16181c; --card: #1f2227; --ink: #e8e6e1; --sub: #a3a9b2;
+      --line: #33373e; --accent: #7aa7ec; --ok: #5cc98b; --ng: #ef7a6d;
+      --ok-bg: #1d3328; --ng-bg: #3a2220;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "Hiragino Sans", "Noto Sans JP", "Yu Gothic", system-ui, sans-serif;
+    line-height: 1.7;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+  header h1 { font-size: 1.4rem; margin: 0 0 4px; }
+  header p { margin: 0; color: var(--sub); font-size: .9rem; }
+  .toolbar {
+    position: sticky; top: 0; z-index: 5; background: var(--bg);
+    display: flex; gap: 8px; align-items: center; justify-content: space-between;
+    padding: 12px 0; margin-top: 12px; border-bottom: 1px solid var(--line);
+  }
+  .score { font-weight: 700; }
+  button.ghost {
+    background: transparent; color: var(--accent); border: 1px solid var(--accent);
+    border-radius: 8px; padding: 6px 12px; font-size: .85rem; cursor: pointer;
+  }
+  .q {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 18px 16px; margin-top: 18px;
+  }
+  .q h2 { font-size: 1rem; margin: 0 0 6px; color: var(--accent); }
+  .ja { margin: 0 0 4px; }
+  .inst { margin: 0 0 10px; color: var(--sub); font-size: .88rem; }
+  .en {
+    font-family: Georgia, "Times New Roman", serif; font-size: 1.08rem;
+    background: var(--bg); border-radius: 8px; padding: 10px 12px; margin: 0 0 12px;
+  }
+  .choices { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  @media (max-width: 480px) { .choices { grid-template-columns: 1fr; } }
+  .choice {
+    text-align: left; background: var(--card); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px;
+    font-size: 1rem; cursor: pointer; font-family: inherit;
+  }
+  .choice:hover:not(:disabled) { border-color: var(--accent); }
+  .choice:disabled { cursor: default; }
+  .choice.correct { background: var(--ok-bg); border-color: var(--ok); color: var(--ok); font-weight: 700; }
+  .choice.wrong { background: var(--ng-bg); border-color: var(--ng); color: var(--ng); }
+  .exp { display: none; margin-top: 12px; border-top: 1px dashed var(--line); padding-top: 12px; font-size: .93rem; }
+  .exp.show { display: block; }
+  .verdict { font-weight: 700; margin: 0 0 6px; }
+  .verdict.ok { color: var(--ok); } .verdict.ng { color: var(--ng); }
+  .exp ul { margin: 6px 0 0; padding-left: 1.2em; }
+  .exp li { margin-bottom: 4px; }
+  b.kw { color: var(--accent); }
+  .result {
+    display: none; margin-top: 24px; text-align: center; background: var(--card);
+    border: 1px solid var(--line); border-radius: 12px; padding: 20px;
+  }
+  .result.show { display: block; }
+  .result .big { font-size: 2rem; font-weight: 800; }
+  footer { margin-top: 32px; color: var(--sub); font-size: .8rem; text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>鉄壁 Section 1〜50 文脈穴埋め確認テスト</h1>
+    <p>全10問・4択。選択肢を押すと正誤と解説が表示されます。</p>
+  </header>
+
+  <div class="toolbar">
+    <span class="score" id="score">0 / 10 問解答</span>
+    <button class="ghost" id="reset">リセット</button>
+  </div>
+
+  <main id="quiz"></main>
+
+  <section class="result" id="result">
+    <div>あなたのスコア</div>
+    <div class="big" id="final"></div>
+    <div id="comment"></div>
+  </section>
+
+  <footer>大学受験英語 語彙確認テスト</footer>
+</div>
+
+<script>
+const QUESTIONS = [
+  {
+    ja: "彼はとても思いやりがあり、疲れている同僚を見るといつも手伝いを申し出る。",
+    pos: "形容詞",
+    en: "He is so (   ) of others that he always offers to help whenever he sees a tired colleague.",
+    choices: ["considerable", "considerate", "considering", "conspicuous"],
+    answer: 1,
+    why: "considerate は「（他人のことを）よく考える → 思いやりのある」。<b class='kw'>be considerate of [to] others</b> の形が定番。「手伝いを申し出る」という行動が決め手。",
+    others: [
+      "considerable は「（量・程度が）かなりの」で、人の性格には使わない。",
+      "considering は「〜を考慮すれば」という前置詞・接続詞。",
+      "conspicuous は「目立つ」で、of others と結びつかない。"
+    ]
+  },
+  {
+    ja: "新しい環境にすぐ順応できなかったので、彼女は最初の数か月間、孤独を感じた。",
+    pos: "動詞の過去形",
+    en: "Since she could not quickly (   ) herself to the new environment, she felt lonely for the first few months.",
+    choices: ["adopted", "adapted", "adhered", "admitted"],
+    answer: 1,
+    why: "<b class='kw'>adapt oneself to 〜</b>「〜に順応する」。核は「環境に合わせて自分を作り変える」イメージ。「孤独を感じた」という結果が、順応できなかったことの裏づけ。",
+    others: [
+      "adopt は「（案・方針を）採用する」「養子にする」で、oneself to の形を取らない。adapt / adopt の取り違えは入試の定番。",
+      "adhere は自動詞で「adhere to（規則などを）守る・固執する」。herself を目的語にできない。",
+      "admit oneself to は「入院・入場する」という別の意味。"
+    ]
+  },
+  {
+    ja: "その事故で彼は視力を失い、長年愛してきた仕事を辞めざるを得なかった。",
+    pos: "動詞の過去形",
+    en: "The accident (   ) him of his sight, forcing him to quit the job he had loved for years.",
+    choices: ["prevented", "deprived", "stole", "removed"],
+    answer: 1,
+    why: "<b class='kw'>deprive A of B</b>「AからBを奪う」。直後の him of his sight が決定的ヒント。",
+    others: [
+      "prevent A <b>from</b> doing（Aが〜するのを妨げる）。",
+      "steal B <b>from</b> A（盗む対象Bが目的語）。",
+      "remove A <b>from</b> B（取り除く）。of を取る rob / deprive / strip のグループとセットで覚えよう。"
+    ]
+  },
+  {
+    ja: "会議の後、参加者たちはそれぞれの国へ帰り、学んだことを同僚と共有した。",
+    pos: "形容詞",
+    en: "After the conference, the participants returned to their (   ) countries and shared what they had learned with colleagues.",
+    choices: ["respectable", "respectful", "respective", "respecting"],
+    answer: 2,
+    why: "respective は「それぞれの」。複数の主語（participants）が「各自の」国へ帰る場面。<b class='kw'>their respective 〜</b> は頻出の形。",
+    others: [
+      "respectable は「（社会的に）立派な・まともな」。",
+      "respectful は「（人に対して）敬意を払う・丁寧な」。respect 派生の三兄弟は最頻出の識別問題。",
+      "respecting は「〜に関して」という前置詞。"
+    ]
+  },
+  {
+    ja: "私の肌はとても敏感なので、香りの強い石けんを使うとすぐに赤くなってしまう。",
+    pos: "形容詞",
+    en: "My skin is so (   ) that it turns red as soon as I use soap with a strong fragrance.",
+    choices: ["sensible", "sensitive", "sensual", "sensational"],
+    answer: 1,
+    why: "sensitive は「刺激に敏感な・傷つきやすい」。「石けんで赤くなる」という結果から、肌の過敏さを表すと分かる。",
+    others: [
+      "sensible は「分別のある・賢明な」。sensitive と最も混同しやすい。",
+      "sensual は「官能的な」。",
+      "sensational は「世間を驚かせる」。"
+    ]
+  },
+  {
+    ja: "国内のスマートフォン利用者の半数以上を若者が占めていることが、調査で明らかになった。",
+    pos: "動詞（原形）",
+    en: "The survey showed that young people (   ) for more than half of the smartphone users in the country.",
+    choices: ["account", "allow", "answer", "call"],
+    answer: 0,
+    why: "<b class='kw'>account for</b> は「説明する」と「（割合を）占める」の多義語。more than half という数量表現が「占める」の意味を決定づける。",
+    others: [
+      "allow for は「〜を考慮に入れる」。",
+      "answer for は「〜の責任を負う」。",
+      "call for は「〜を要求する」。"
+    ]
+  },
+  {
+    ja: "彼は最初その提案を受け入れるのに乗り気でなかったが、詳しい説明を聞いて最終的に同意した。",
+    pos: "形容詞",
+    en: "At first he was (   ) to accept the proposal, but after hearing a detailed explanation, he finally agreed.",
+    choices: ["eager", "reluctant", "liable", "apt"],
+    answer: 1,
+    why: "<b class='kw'>be reluctant to do</b>「〜するのに気が進まない」。後半の but … finally agreed（逆接＋最終的に同意）から、最初は乗り気でなかったと分かる。",
+    others: [
+      "eager（熱心な）では but 以下とつながらない。",
+      "liable to は「〜しがちだ」という傾向を表す。",
+      "apt to も「〜しがちだ」で、逆接の流れに合わない。"
+    ]
+  },
+  {
+    ja: "彼の笑顔から、私は彼が試験に合格したのだと推測したが、実は不合格だった。",
+    pos: "動詞の過去形",
+    en: "From his smile, I (   ) that he had passed the exam, but in fact he had failed.",
+    choices: ["implied", "inferred", "inspired", "insisted"],
+    answer: 1,
+    why: "infer は「（証拠から）推論する」。From his smile という判断材料が決め手。",
+    others: [
+      "imply は「（話し手が）ほのめかす」で、意味の方向が逆。彼の笑顔が implied したのであって、私が implied したのではない。",
+      "inspire は「奮い立たせる」。",
+      "insist は「言い張る」で、from 〜 の推論の流れに合わない。"
+    ]
+  },
+  {
+    ja: "その地域では水が乏しいため、住民は毎朝遠くの井戸まで歩いて水をくみに行く。",
+    pos: "形容詞",
+    en: "Because water is (   ) in the region, residents walk to a distant well every morning to fetch it.",
+    choices: ["abundant", "scarce", "scared", "sparse"],
+    answer: 1,
+    why: "scarce は「（需要に対して）乏しい・不足した」。「遠くの井戸まで毎朝くみに行く」という結果から判断できる。",
+    others: [
+      "abundant（豊富な）は文脈と正反対。",
+      "scared（怖がった）は形が似ているだけのひっかけ。",
+      "sparse は「まばらな」で、人口・髪・植物など散らばって存在するものに使う。水の量には不自然。"
+    ]
+  },
+  {
+    ja: "真の幸福は富を持つことにあるのではなく、他者と喜びを分かち合うことにある。",
+    pos: "前置詞の組み合わせ",
+    en: "True happiness does not consist (   ) owning wealth but (   ) sharing joy with others.",
+    choices: ["of / of", "in / in", "of / in", "in / of"],
+    answer: 1,
+    why: "<b class='kw'>consist in</b>「〜にある（本質）」＝ lie in。<b class='kw'>consist of</b>「〜から成る（構成要素）」。幸福の「本質がどこにあるか」を述べる文なので両方 in。",
+    others: [
+      "not A but B の構造なので、but の後も consist に続く形になり、前置詞がそろう。",
+      "of を入れると「幸福は富の所有から構成される」という意味になってしまう。"
+    ]
+  }
+];
+
+const LABELS = ["A", "B", "C", "D"];
+const quizEl = document.getElementById("quiz");
+const scoreEl = document.getElementById("score");
+const resultEl = document.getElementById("result");
+let answered = 0, correct = 0;
+
+function render() {
+  quizEl.innerHTML = "";
+  answered = 0; correct = 0;
+  resultEl.classList.remove("show");
+  updateScore();
+
+  QUESTIONS.forEach((q, i) => {
+    const sec = document.createElement("section");
+    sec.className = "q";
+    sec.innerHTML = `
+      <h2>第${i + 1}問</h2>
+      <p class="ja">「${q.ja}」</p>
+      <p class="inst">という文脈で、空欄に入る最も適切な${q.pos}を選びなさい。</p>
+      <p class="en">${q.en}</p>
+      <div class="choices"></div>
+      <div class="exp">
+        <p class="verdict"></p>
+        <div><strong>正解：${LABELS[q.answer]}. ${q.choices[q.answer]}</strong></div>
+        <ul>
+          <li>${q.why}</li>
+          ${q.others.map(o => `<li>${o}</li>`).join("")}
+        </ul>
+      </div>`;
+    const box = sec.querySelector(".choices");
+    q.choices.forEach((c, j) => {
+      const b = document.createElement("button");
+      b.className = "choice";
+      b.textContent = `${LABELS[j]}. ${c}`;
+      b.addEventListener("click", () => choose(sec, q, j));
+      box.appendChild(b);
+    });
+    quizEl.appendChild(sec);
+  });
+}
+
+function choose(sec, q, j) {
+  const btns = sec.querySelectorAll(".choice");
+  btns.forEach(b => (b.disabled = true));
+  btns[q.answer].classList.add("correct");
+  const ok = j === q.answer;
+  if (!ok) btns[j].classList.add("wrong");
+  const v = sec.querySelector(".verdict");
+  v.textContent = ok ? "正解！" : "不正解…";
+  v.className = "verdict " + (ok ? "ok" : "ng");
+  sec.querySelector(".exp").classList.add("show");
+  answered++; if (ok) correct++;
+  updateScore();
+  if (answered === QUESTIONS.length) showResult();
+}
+
+function updateScore() {
+  scoreEl.textContent = `${answered} / ${QUESTIONS.length} 問解答 ・ 正解 ${correct}`;
+}
+
+function showResult() {
+  document.getElementById("final").textContent = `${correct} / ${QUESTIONS.length}`;
+  const rate = correct / QUESTIONS.length;
+  document.getElementById("comment").textContent =
+    rate === 1 ? "完璧！この範囲はバッチリです。" :
+    rate >= 0.7 ? "よくできました。間違えた問題の解説を見直そう。" :
+    "解説を読んで、紛らわしい語の違いを整理しよう。";
+  resultEl.classList.add("show");
+  resultEl.scrollIntoView({ behavior: "smooth" });
+}
+
+document.getElementById("reset").addEventListener("click", () => {
+  render();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+render();
+</script>
+</body>
+</html>
